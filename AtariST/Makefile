@@ -6,3 +6,6 @@
 run-4thcore:
 	hatari --mono --cpuclock 32 --auto C:\4THCORE.PRG --confirm-quit \
 	false .
+
+run-hconsole:
+	./emulator/run-in-hatari.py
