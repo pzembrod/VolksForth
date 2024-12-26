@@ -8,4 +8,5 @@ run-4thcore:
 	false .
 
 run-hconsole:
+	rm -f DONE.TXT
 	./emulator/run-in-hatari.py
