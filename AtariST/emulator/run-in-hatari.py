@@ -6,11 +6,29 @@ sys.path.append('/usr/share/hatari/hconsole')
 
 import hconsole
 
-args = ['hatari', '--mono', '--cpuclock', '32', # '--conout', '2',
-        '--auto', 'C:\\4THCORE.PRG', '--confirm-quit', 'false', '.']
+# emulatordir="$(realpath --relative-to="$PWD" "$(dirname "${BASH_SOURCE[0]}")")"
+# basedir="$(realpath --relative-to="$PWD" "${emulatordir}/..")"
+# cpmfilesdir="${basedir}/cpmfiles"
+
+cwd = os.path.abspath(os.path.curdir)
+emulatordir = os.path.relpath(os.path.dirname(sys.argv[0]), start=cwd)
+basedir = os.path.normpath(os.path.join(emulatordir, '..'))
+print('cwd = %s' % cwd)
+print('emulatordir = %s' % emulatordir)
+print('basedir = %s' % basedir)
+
+# forth="$1"
+# forthcmd="$2"
+
+forth = sys.argv[1] if len(sys.argv) > 1 else '4thcore.prg'
+
+hatari_args = [
+    'hatari', '--mono', '--sound', 'off', '--cpuclock', '32',
+    # '--conout', '2',
+    '--auto', forth, '--confirm-quit', 'false', '.']
 
 print('will create main')
-main = hconsole.Main(args)
+main = hconsole.Main(hatari_args)
 code = hconsole.Scancode
 print('main created')
 
