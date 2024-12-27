@@ -13,18 +13,25 @@ import hconsole
 cwd = os.path.abspath(os.path.curdir)
 emulatordir = os.path.relpath(os.path.dirname(sys.argv[0]), start=cwd)
 basedir = os.path.normpath(os.path.join(emulatordir, '..'))
+hatariworkdir = os.path.normpath(os.path.join(basedir, '.'))
+donefile = os.path.normpath(os.path.join(hatariworkdir, 'DONE.TXT'))
 print('cwd = %s' % cwd)
 print('emulatordir = %s' % emulatordir)
 print('basedir = %s' % basedir)
+print('hatariworkdir = %s' % hatariworkdir)
+print('donefile = %s' % donefile)
+if os.path.exists(donefile):
+  os.remove(donefile)
 
 # forth="$1"
 # forthcmd="$2"
 
 forth = sys.argv[1] if len(sys.argv) > 1 else '4thcore.prg'
+forthcmds = sys.argv[2:]
 
 hatari_args = [
     'hatari', '--mono', '--sound', 'off', '--cpuclock', '32',
-    # '--conout', '2',
+    '--fast-forward', 'true', # '--conout', '2',
     '--auto', forth, '--confirm-quit', 'false', '.']
 
 print('will create main')
@@ -36,15 +43,22 @@ while not main.tokens.hatari.is_running():
   print('waiting for hatari to run')
   time.sleep(1)
 
-time.sleep(7)
+time.sleep(3)
+
+for cmd in forthcmds:
+  main.run('text %s' % cmd)
+  main.run('keypress %s' % code.Return)
 
 main.run('text makefile done.txt')
 main.run('keypress %s' % code.Return)
 
-while main.tokens.hatari.is_running() and not os.path.exists('DONE.TXT'):
-  print('waiting for done.txt')
+while main.tokens.hatari.is_running() and not os.path.exists(donefile):
+  print('waiting for %s' % donefile)
   time.sleep(1)
-print('done.txt found')
+print('%s found' % donefile)
 
 main.run("kill")
 print('killed')
+
+if os.path.exists(donefile):
+  os.remove(donefile)

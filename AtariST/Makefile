@@ -8,5 +8,4 @@ run-4thcore:
 	--confirm-quit false .
 
 run-hconsole:
-	rm -f DONE.TXT
-	./emulator/run-in-hatari.py 4thcore.prg
+	./emulator/run-in-hatari.py 4thcore.prg ".( hello world)" "1 2 + ."
