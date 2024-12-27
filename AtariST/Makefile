@@ -14,12 +14,18 @@ fb_txt_files = $(srcfbtxtfiles) # $(testsfbtxtfiles)
 fb.txt: $(fb_txt_files)
 
 run-4thcore:
-	hatari --mono --sound off  --cpuclock 32 --auto 4thcore.prg \
+	hatari --mono --sound off --cpuclock 32 --auto 4thcore.prg \
 	--confirm-quit false .
 
 run-hconsole:
 	./emulator/run-in-hatari.py 4thcore.prg ".( hello world)" "1 2 + ."
 
+4thimg.prg:
+	./emulator/run-in-hatari.py volks4th.prg "include c.fb"
+
+run-4thimg.prg:
+	hatari --mono --sound off --cpuclock 32 --auto 4thimg.prg \
+	--confirm-quit false .
 
 $(srcfbtxtfiles): src/%.fb.txt: %.FB ../tools/fb2fth.py
 	../tools/fb2fth.py $< $@
