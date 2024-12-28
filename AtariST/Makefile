@@ -3,10 +3,10 @@
 # sudo apt install hatari
 # sudo cp emutos-512k-1.3/etos512us.img /usr/share/hatari/tos.img
 
-# srcfbfiles = $(wildcard src/*.fb)
-# srcfbtxtfiles = $(patsubst src/%.fb, src/%.fb.txt, $(srcfbfiles))
-srcfbfiles = $(wildcard *.FB)
-srcfbtxtfiles = $(patsubst %.FB, src/%.fb.txt, $(srcfbfiles))
+srcfbfiles = $(wildcard src/*.fb)
+srcfbtxtfiles = $(patsubst src/%.fb, src/%.fb.txt, $(srcfbfiles))
+# srcfbfiles = $(wildcard *.FB)
+# srcfbtxtfiles = $(patsubst %.FB, src/%.fb.txt, $(srcfbfiles))
 # testsfbfiles = $(wildcard tests/*.fb)
 # testsfbtxtfiles = $(patsubst tests/%.fb, tests/%.fb.txt, $(testsfbfiles))
 fb_txt_files = $(srcfbtxtfiles) # $(testsfbtxtfiles)
@@ -27,11 +27,11 @@ run-4thimg.prg:
 	hatari --mono --sound off --cpuclock 32 --auto 4thimg.prg \
 	--confirm-quit false .
 
-$(srcfbtxtfiles): src/%.fb.txt: %.FB ../tools/fb2fth.py
-	../tools/fb2fth.py $< $@
-
-# $(srcfbtxtfiles): src/%.fb.txt: src/%.fb ../tools/fb2fth.py
+# $(srcfbtxtfiles): src/%.fb.txt: %.FB ../tools/fb2fth.py
 # 	../tools/fb2fth.py $< $@
+
+$(srcfbtxtfiles): src/%.fb.txt: src/%.fb ../tools/fb2fth.py
+	../tools/fb2fth.py $< $@
 
 # $(testsfbtxtfiles): tests/%.fb.txt: tests/%.fb ../tools/fb2fth.py
 # 	../tools/fb2fth.py $< $@
