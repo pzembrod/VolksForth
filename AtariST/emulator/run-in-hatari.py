@@ -13,7 +13,7 @@ import hconsole
 cwd = os.path.abspath(os.path.curdir)
 emulatordir = os.path.relpath(os.path.dirname(sys.argv[0]), start=cwd)
 basedir = os.path.normpath(os.path.join(emulatordir, '..'))
-hatariworkdir = os.path.normpath(os.path.join(basedir, '.'))
+hatariworkdir = os.path.normpath(os.path.join(basedir, 'stfiles'))
 donefile = os.path.normpath(os.path.join(hatariworkdir, 'DONE.TXT'))
 print('cwd = %s' % cwd)
 print('emulatordir = %s' % emulatordir)
@@ -32,7 +32,7 @@ forthcmds = sys.argv[2:]
 hatari_args = [
     'hatari', '--mono', '--sound', 'off', '--cpuclock', '32',
     '--fast-forward', 'true', # '--conout', '2',
-    '--auto', forth, '--confirm-quit', 'false', '.']
+    '--auto', forth, '--confirm-quit', 'false', hatariworkdir]
 
 print('will create main')
 main = hconsole.Main(hatari_args)
