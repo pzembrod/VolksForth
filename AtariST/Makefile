@@ -76,7 +76,7 @@ v4th.prg: \
 v4th-new.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
     log2file.fb assemble.fb target.fb forth83.fb \
-    include.fb v4th.fs tfileint.fs) \
+    include.fb v4th.fs tinclude.fs) \
     Makefile
 	rm -f $(stfilesdir)/output.log $(stfilesdir)/v4th.prg
 	./emulator/run-in-hatari.py volks4th.prg \
@@ -91,7 +91,6 @@ v4th-new.prg: \
 	"transient definitions order" \
 	"include v4th.fs" \
 	"save-target v4th-new.prg" \
-	"" \
 	"logclose"
 	dos2unix -n $(stfilesdir)/output.log $@.log
 	cp $(stfilesdir)/$@ $@
@@ -194,17 +193,33 @@ test-min.log: \
     fileint.fb include.fb log2file.fb \
     ans-shim.fs prelim.fs tester.fs core.fs test-min.fs) \
     | Makefile
-	./emulator/run-in-hatari.py v4ht.prg fileint.fb \
+	./emulator/run-in-hatari.py v4th.prg fileint.fb \
 	    "1 load" \
 	    "onlyforth" \
 	    ".( include test-min.fs)"
-	dos2unix -n $(runcpmdir)/logfile.txt $@
+	dos2unix -n $(stfilesdir)/output.log $@
 
+test-new.log: \
+    $(patsubst %, $(stfilesdir)/%, v4th-new.prg \
+    log2file.fs makefile.fs \
+    ans-shim.fs prelim.fs tester.fs core.fs test-min.fs) \
+    | Makefile
+	./emulator/run-in-hatari.py v4th-new.prg \
+	    "include log2file.fs" \
+	    "onlyforth" \
+	    "include makefile.fs" \
+	    "include test-min.fs"
+	dos2unix -n $(stfilesdir)/output.log $@
+
+#	    "' .blk|tib IS .status" \
 
 test-org.golden: test-min.golden
 	cp $< $@
 
 test-min.golden: $(patsubst %, tests/golden/%.golden, prelim core)
+	cat $^ > $@
+
+test-new.golden: $(patsubst %, tests/golden/%.golden, prelim core)
 	cat $^ > $@
 
 test-std.golden: $(patsubst %, tests/golden/%.golden, \

@@ -21,7 +21,8 @@ Code restart      here >restart !
    ' (restart >body FP D) IP lea   bootsystem bra   end-code
 
 $78 $82 +thru        \ Atari 520 ST Interface
-include tfileint.fs
+
+include tinclude.fs  \ Bootstrap stream include
 
    
 Host    ' Transient 8 + @  Transient Forth context @ 6 + !
