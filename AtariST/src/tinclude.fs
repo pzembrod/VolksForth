@@ -15,10 +15,6 @@ Variable workspace    &64 allot       \ place for c$
 
 \ File functions for save-system                     cas20130105
 
-\ *** Block No. 2, Hexblock 2
-
-\ File functions for save-system                     cas20130105
-
 \ : arguments ( n -- )
 \     depth 1- > abort" not enough Parameters" ;
 
@@ -74,9 +70,6 @@ Code lseek      ( d handle n -- d' )
 
 : position      ( d handle -- f )
    0 lseek   0< ?exit   drop false ;
-
-: position?     ( handle -- d )
-   0 0 rot  1  lseek   dup 0<  IF  ?diskabort  THEN ;
 
 
 \ *** Block No. 9, Hexblock 9
@@ -134,7 +127,7 @@ Code (openfile  ( C$ -- handle )
   create incl# 0 , 0 ,
   variable incl>   variable incl-eof
   : incl[]-reset   incl[ dup ]incl ! incl> !   incl-eof off ;
-  variable incl-filehandle
+  variable incl-filehandle  incl-filehandle off
   $50 constant /tib
 
   : fread-incl[]  ( -- )
@@ -200,7 +193,7 @@ Code (openfile  ( C$ -- handle )
 
 \ interpret-via-tib                                  phz 03jun25
 
-  : (interpret-via-tib  ( filehandle -- )
+  : (interpret-from-file  ( filehandle -- )
   incl-filehandle push   incl-filehandle !
   incl# dup push off  incl# 2+ dup push off  incl[]-reset
   BEGIN freadline >r .status >in off interpret
@@ -224,13 +217,12 @@ Code (openfile  ( C$ -- handle )
 \    IF  isfile?  IF execute drop  exit THEN THEN drop
 \    dup >in ! File    dup >in ! ' execute    >in !  assign ;
 
-| : incl-use ( -- ) ( incl-filehandle ! )
+| : (use-openfile ( -- filehandle )
   name count  2dup cr type bl emit  makec$
-  (openfile  dup ?diskabort  incl-filehandle ! ;
+  (openfile  dup ?diskabort ;
 
   : (include ( -- )
-  incl-filehandle push  incl-use
-  savetib >r incl-filehandle @ (interpret-via-tib  r> restoretib ;
+  savetib >r (use-openfile (interpret-from-file  r> restoretib ;
 
   : include ( -- )
   (include
