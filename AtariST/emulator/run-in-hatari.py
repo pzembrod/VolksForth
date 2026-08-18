@@ -14,7 +14,8 @@ cwd = os.path.abspath(os.path.curdir)
 emulatordir = os.path.relpath(os.path.dirname(sys.argv[0]), start=cwd)
 basedir = os.path.normpath(os.path.join(emulatordir, '..'))
 hatariworkdir = os.path.normpath(os.path.join(basedir, 'stfiles'))
-donefile = os.path.normpath(os.path.join(hatariworkdir, 'DONE.TXT'))
+donename = 'DONE'
+donefile = os.path.normpath(os.path.join(hatariworkdir, donename))
 print('cwd = %s' % cwd)
 print('emulatordir = %s' % emulatordir)
 print('basedir = %s' % basedir)
@@ -53,7 +54,7 @@ for cmd in forthcmds:
   time.sleep(1)
 
 if not 'KEEPEMU' in os.environ:
-  main.run('text makefile done.txt')
+  main.run('text makefile ' + donename)
   main.run('keypress %s' % code.Return)
 else:
   main.run("--fast-forward false")
