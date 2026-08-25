@@ -12,15 +12,17 @@ Onlyforth
         0 dup displace !
 Target definitions here!
 
+ include vf-prghd.fs  \ Basepage (TOS PRG Header)
+
 use forth83.fb
 
-   $83 load
+\   $83 load
  2 $75 thru
 
 Code restart      here >restart !
    ' (restart >body FP D) IP lea   bootsystem bra   end-code
 
-$78 $82 +thru        \ Atari 520 ST Interface
+$78 $82 thru        \ Atari 520 ST Interface
 
 include tinclude.fs  \ Bootstrap stream include
 
