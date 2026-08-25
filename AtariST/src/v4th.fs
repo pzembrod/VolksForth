@@ -33,6 +33,9 @@ Target Forth also definitions
 
    $77 load
 
-.( before unresolve) cr
-cr .unresolved  ' .blk is .status
-.( after unresolve) cr
+cr .( unresolved: )  .unresolved 
+' .blk is .status
+
+save-target v4th.prg
+
+cr .( new kernel written as v4th.prg) cr
