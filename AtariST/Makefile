@@ -53,7 +53,7 @@ run-editor: | msdos
 
 
 # Original kernel as of the late 80s
-v4th.prg: \
+v4th-old.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
     log2file.fb assemble.fb target.fb forth83.fb) \
     Makefile
@@ -65,7 +65,7 @@ v4th.prg: \
 	"include assemble.fb" \
 	"include target.fb" \
 	"include forth83.fb" \
-	"save-target v4th.prg" \
+	"save-target v4th-old.prg" \
 	"logclose"
 	dos2unix -n $(stfilesdir)/output.log $@.log
 	cp $(stfilesdir)/$@ $@
