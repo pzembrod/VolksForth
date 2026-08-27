@@ -33,7 +33,25 @@ Host    ' Transient 8 + @  Transient Forth context @ 6 + !
 Target Forth also definitions
 : forth-83 ;     \ last word in Dictionary
 
-   $77 load
+\   $77 load  \ System patchup
+\ include vf-patch.fs
+\ For reasons as yet unclear include vf-patch.fs crashes Forth.
+\ Block $77 contains the same code; loading it worked.
+\ Inlining the same code works, too.
+\ begin inlined vf-patch.fs
+
+Forth definitions
+
+$D3AA s0 !    $D7AA r0 !   \ gives &10 Buffers
+s0 @ dup s0 2- !         6 + s0 8 - !
+here dp !
+
+Host  Tudp @         Target  udp !
+Host  Tvoc-link @    Target  voc-link !
+Host  Tnext-link @   Target  next-link !
+Host  move-threads
+
+\ end inlined vf-patch.fs
 
 cr .( unresolved: )  .unresolved 
 ' .blk is .status
