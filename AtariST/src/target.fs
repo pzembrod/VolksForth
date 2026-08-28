@@ -4,13 +4,14 @@
 \ ultraFORTH83-Version by bp/we
 \ Atari 520 ST - Version by we
 
- : .stat .blk .s ;     ' .stat Is .status
-\ : .stat .blk|tib .s ;     ' .stat Is .status
+ : ?.s  state @ 0= IF .s THEN ;
+ : .stat .blk ?.s ;     ' .stat Is .status
+\ : .stat .blk|tib ?.s ;     ' .stat Is .status
 
 \  : .blk|tib+.s  ( -- )
 \    blk @ ?dup IF ." Blk " u.  .s ." ::" ?cr  exit THEN
 \    incl-file @ IF tib #tib @ type cr THEN 
-\    ." stack: " .s ." ::" cr ;
+\    state @ 0= IF ." stack: " .s ." ::" cr THEN ;
     
 \    ' .blk|tib+.s Is .status
     
