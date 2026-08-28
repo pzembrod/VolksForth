@@ -128,7 +128,6 @@ Code (openfile  ( C$ -- handle )
   variable incl>   variable incl-eof
   : incl[]-reset   incl[ dup ]incl ! incl> !   incl-eof off ;
   variable incl-filehandle  incl-filehandle off
-  $50 constant /tib
 
   : fread-incl[]  ( -- )
       incl[ /incl[] incl-filehandle @ (fileread

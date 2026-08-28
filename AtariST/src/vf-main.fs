@@ -915,15 +915,16 @@ Code allot    ( n -- )      UP R#) D6 move   SP )+ D0 move
 
 \ input strings                                        25mar86we
 
+$84 Constant /tib
 Variable #tib     0 #tib !
-Variable >tib     here >tib !  &80 allot
+Variable >tib     here >tib !  /tib allot
 Variable >in      0 >in !
 Variable blk      0 blk !
 Variable span     0 span !
 
 : tib ( -- addr )        >tib @ ;
 
-: query           tib &80 expect  span @ #tib !
+: query           tib /tib expect  span @ #tib !
                   >in off  blk off ;
 
 

@@ -26,7 +26,7 @@ Code restart      here >restart !
 \ $78 $82 thru        \ Atari 520 ST Interface
  include vf-sys.fs
 
-include tinclude.fs  \ Bootstrap stream include
+ include vf-incl.fs  \ Bootstrap stream include
 
    
 Host    ' Transient 8 + @  Transient Forth context @ 6 + !

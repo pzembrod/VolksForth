@@ -73,9 +73,8 @@ v4th-old.prg: \
 # First step of a kernel built from stream sources
 v4th.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
-    log2file.fb assemble.fb target.fb target.fs \
-    include.fb v4th.fs vf-main.fs vf-prghd.fs vf-sys.fs vf-patch.fs \
-    tinclude.fs) \
+    log2file.fb assemble.fb target.fb target.fs include.fb \
+    v4th.fs vf-main.fs vf-prghd.fs vf-sys.fs vf-patch.fs vf-incl.fs) \
     Makefile
 	rm -f $(stfilesdir)/output.log $(stfilesdir)/$@
 	./emulator/run-in-hatari.py volks4th.prg \
