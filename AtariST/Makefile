@@ -74,7 +74,8 @@ v4th-old.prg: \
 v4th.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
     log2file.fb assemble.fb target.fb target.fs forth83.fb \
-    include.fb v4th.fs vf-prghd.fs vf-patch.fs tinclude.fs) \
+    include.fb v4th.fs vf-main.fs vf-prghd.fs vf-patch.fs \
+    tinclude.fs) \
     Makefile
 	rm -f $(stfilesdir)/output.log $(stfilesdir)/$@
 	./emulator/run-in-hatari.py volks4th.prg \

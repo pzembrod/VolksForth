@@ -16,8 +16,9 @@ Target definitions here!
 
 use forth83.fb
 
-\   $83 load
- 2 $75 thru
+\   $83 load  \ Basepage (TOS PRG Header)
+\ 2 $75 thru
+ include vf-main.fs
 
 Code restart      here >restart !
    ' (restart >body FP D) IP lea   bootsystem bra   end-code
@@ -33,11 +34,15 @@ Host    ' Transient 8 + @  Transient Forth context @ 6 + !
 Target Forth also definitions
 : forth-83 ;     \ last word in Dictionary
 
-\   $77 load  \ System patchup
+\ $77 load  \ System patchup
 \ include vf-patch.fs
-\ For reasons as yet unclear include vf-patch.fs crashes Forth.
-\ Block $77 contains the same code; loading it worked.
-\ Inlining the same code works, too.
+\ vf-patch.fs contains the same code as block $77, yet replacing
+\ load with include her crashes Forth.
+\ In fact, including any file, even simple, even non-existing,
+\ at htis point crashes Forth. To be investigated more.
+\ include vf-hello2.fs
+
+\ Temporary workaround: Inlining the code from vf-patch.fs works.
 \ begin inlined vf-patch.fs
 
 Forth definitions
