@@ -2,7 +2,7 @@
 \ include logfile.fs
 logopen
 
-include ans-shim.fs .( hello tib) cr
+include ans-shim.fs
 : \vf  [compile] \ ; immediate
 
 \ \atari marks tests that fail with VolksForth 3.85.2

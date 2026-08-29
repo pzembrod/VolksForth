@@ -53,7 +53,7 @@ run-editor: | msdos
 
 
 # Original kernel as of the late 80s
-v4th.prg: \
+v4th-old.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
     log2file.fb assemble.fb target.fb forth83.fb) \
     Makefile
@@ -65,20 +65,18 @@ v4th.prg: \
 	"include assemble.fb" \
 	"include target.fb" \
 	"include forth83.fb" \
-	"save-target v4th.prg" \
+	"save-target v4th-old.prg" \
 	"logclose"
 	dos2unix -n $(stfilesdir)/output.log $@.log
 	cp $(stfilesdir)/$@ $@
 
 # First step of a kernel built from stream sources
-# TODO: figure out how to load the tfileint.fs version from the
-# target compiler.
-v4th-new.prg: \
+v4th.prg: \
     $(patsubst %, $(stfilesdir)/%, volks4th.prg ediicon.rsc \
-    log2file.fb assemble.fb target.fb forth83.fb \
-    include.fb v4th.fs tfileint.fs) \
+    log2file.fb assemble.fb target.fb target.fs include.fb \
+    v4th.fs vf-main.fs vf-prghd.fs vf-sys.fs vf-patch.fs vf-incl.fs) \
     Makefile
-	rm -f $(stfilesdir)/output.log $(stfilesdir)/v4th.prg
+	rm -f $(stfilesdir)/output.log $(stfilesdir)/$@
 	./emulator/run-in-hatari.py volks4th.prg \
 	"2 buffers" \
 	"use log2file.fb dos also 4 5 thru" \
@@ -86,15 +84,17 @@ v4th-new.prg: \
 	"onlyforth" \
 	"include assemble.fb" \
 	"include include.fb" \
-	"include target.fb" \
+	"( include target.fb)" \
+	"include target.fs" \
 	"order onlyforth" \
 	"transient definitions order" \
 	"include v4th.fs" \
-	"save-target v4th-new.prg" \
-	"" \
 	"logclose"
 	dos2unix -n $(stfilesdir)/output.log $@.log
 	cp $(stfilesdir)/$@ $@
+	grep -F 'unresolved:' $@.log
+	grep -F 'new kernel written as v4th.prg' $@.log
+	grep -i 'unresolved:.*[^ ]' $@.log && exit 1 || true
 
 # A few debug helpers for copying into the make target above:
 
@@ -191,15 +191,28 @@ test-org.log: \
 
 test-min.log: \
     $(patsubst %, $(stfilesdir)/%, v4th.prg \
-    fileint.fb include.fb log2file.fb \
+    log2file.fs makefile.fs \
     ans-shim.fs prelim.fs tester.fs core.fs test-min.fs) \
     | Makefile
-	./emulator/run-in-hatari.py v4ht.prg fileint.fb \
-	    "1 load" \
+	./emulator/run-in-hatari.py v4th.prg \
+	    "include log2file.fs" \
 	    "onlyforth" \
-	    ".( include test-min.fs)"
-	dos2unix -n $(runcpmdir)/logfile.txt $@
+	    "include makefile.fs" \
+	    "include test-min.fs"
+	dos2unix -n $(stfilesdir)/output.log $@
 
+test-std.log: \
+    $(patsubst %, $(stfilesdir)/%, v4th.prg) \
+    $(patsubst tests/%, $(stfilesdir)/%, $(wildcard tests/*.fs)) \
+     | Makefile
+	./emulator/run-in-hatari.py v4th.prg \
+	    "include log2file.fs" \
+	    "onlyforth" \
+	    "include makefile.fs" \
+	    "include test-std.fs"
+	dos2unix -n $(stfilesdir)/output.log $@
+
+#	    "' .blk|tib IS .status" \
 
 test-org.golden: test-min.golden
 	cp $< $@
@@ -236,12 +249,12 @@ $(testsfbtxtfiles): tests/%.fb.txt: tests/%.fb ../tools/fb2fth.py
 
 $(stfilesdir)/%: src/%
 	mydir=$$(dirname $@) && test -d "$$mydir" || mkdir -p "$$mydir"
-	cp $< $@
+	cp -p $< $@
 
 $(stfilesdir)/%: tests/%
 	mydir=$$(dirname $@) && test -d "$$mydir" || mkdir -p "$$mydir"
-	cp $< $@
+	cp -p $< $@
 
 $(stfilesdir)/%: %
 	test -d $(stfilesdir) || mkdir -p $(stfilesdir)
-	cp $< $@
+	cp -p $< $@

@@ -3,11 +3,14 @@
 \     blk @ ?dup IF  ."  Blk " u. ?cr  exit THEN
 \     incfile @ IF tib #tib @ cr type THEN ;
 
-include logfile.fs
+\ include logfile.fs
 logopen
 
 include ans-shim.fs
 : \vf  [compile] \ ; immediate
+
+\ \atari marks tests that fail with VolksForth 3.85.2
+: \atari  [compile] \ ; immediate
 
 include prelim.fs
 include tester.fs

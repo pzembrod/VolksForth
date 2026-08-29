@@ -12,16 +12,21 @@ Onlyforth
         0 dup displace !
 Target definitions here!
 
-use forth83.fb
+ include vf-prghd.fs  \ Basepage (TOS PRG Header)
 
-   $83 load
- 2 $75 thru
+\ use forth83.fb
+
+\   $83 load  \ Basepage (TOS PRG Header)
+\ 2 $75 thru
+ include vf-main.fs
 
 Code restart      here >restart !
    ' (restart >body FP D) IP lea   bootsystem bra   end-code
 
-$78 $82 +thru        \ Atari 520 ST Interface
-include tfileint.fs
+\ $78 $82 thru        \ Atari 520 ST Interface
+ include vf-sys.fs
+
+ include vf-incl.fs  \ Bootstrap stream include
 
    
 Host    ' Transient 8 + @  Transient Forth context @ 6 + !
@@ -30,8 +35,33 @@ Host    ' Transient 8 + @  Transient Forth context @ 6 + !
 Target Forth also definitions
 : forth-83 ;     \ last word in Dictionary
 
-   $77 load
+\ $77 load  \ System patchup
+\ include vf-patch.fs
+\ vf-patch.fs contains the same code as block $77, yet replacing
+\ load with include her crashes Forth.
+\ In fact, including any file, even simple, even non-existing,
+\ at htis point crashes Forth. To be investigated more.
+\ include vf-hello2.fs
 
-.( before unresolve) cr
-cr .unresolved  ' .blk is .status
-.( after unresolve) cr
+\ Temporary workaround: Inlining the code from vf-patch.fs works.
+\ begin inlined vf-patch.fs
+
+Forth definitions
+
+$D3AA s0 !    $D7AA r0 !   \ gives &10 Buffers
+s0 @ dup s0 2- !         6 + s0 8 - !
+here dp !
+
+Host  Tudp @         Target  udp !
+Host  Tvoc-link @    Target  voc-link !
+Host  Tnext-link @   Target  next-link !
+Host  move-threads
+
+\ end inlined vf-patch.fs
+
+cr .( unresolved: )  .unresolved 
+' .blk is .status
+
+save-target v4th.prg
+
+cr .( new kernel written as v4th.prg) cr
