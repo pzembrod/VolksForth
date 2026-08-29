@@ -201,6 +201,17 @@ test-min.log: \
 	    "include test-min.fs"
 	dos2unix -n $(stfilesdir)/output.log $@
 
+test-std.log: \
+    $(patsubst %, $(stfilesdir)/%, v4th.prg) \
+    $(patsubst tests/%, $(stfilesdir)/%, $(wildcard tests/*.fs)) \
+     | Makefile
+	./emulator/run-in-hatari.py v4th.prg \
+	    "include log2file.fs" \
+	    "onlyforth" \
+	    "include makefile.fs" \
+	    "include test-std.fs"
+	dos2unix -n $(stfilesdir)/output.log $@
+
 #	    "' .blk|tib IS .status" \
 
 test-org.golden: test-min.golden
@@ -238,12 +249,12 @@ $(testsfbtxtfiles): tests/%.fb.txt: tests/%.fb ../tools/fb2fth.py
 
 $(stfilesdir)/%: src/%
 	mydir=$$(dirname $@) && test -d "$$mydir" || mkdir -p "$$mydir"
-	cp $< $@
+	cp -p $< $@
 
 $(stfilesdir)/%: tests/%
 	mydir=$$(dirname $@) && test -d "$$mydir" || mkdir -p "$$mydir"
-	cp $< $@
+	cp -p $< $@
 
 $(stfilesdir)/%: %
 	test -d $(stfilesdir) || mkdir -p $(stfilesdir)
-	cp $< $@
+	cp -p $< $@
