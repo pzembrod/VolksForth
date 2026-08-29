@@ -23,9 +23,10 @@ rm -f "${basedir}/cbmfiles/${logfile}"
 keybuf="include ${source}\nsave-target ${target}\ndos s0:notdone"
 test -n "${nosave}" && keybuf="include ${source}\n"
 
-DISK10=tc38q "${emulatordir}/run-in-vice.sh" \
-  "${TCBASE}" "${keybuf}"
+"${emulatordir}/run-in-vice.sh" "${TCBASE}" "${keybuf}"
 
 petscii2ascii "${basedir}/cbmfiles/${logfile}" | \
   grep -F 'target compile complete' || \
-  (echo "check logfile ${basedir}/cbmfiles/${logfile}" && exit 1)
+  (echo "check logfile ${basedir}/cbmfiles/${logfile}" &&
+    (test -z "${nosave}" && rm -f "${basedir}/cbmfiles/${target}") &&
+  exit 1)
