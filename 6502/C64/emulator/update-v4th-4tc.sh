@@ -12,4 +12,4 @@ emulatordir="$(realpath --relative-to="$PWD" "$(dirname "${BASH_SOURCE[0]}")")"
 basedir="$(realpath --relative-to="$PWD" "${emulatordir}/..")"
 cbmfilesdir="${basedir}/cbmfiles"
 
-cp "${cbmfilesdir}/v4thblk-c64" "${cbmfilesdir}/v4th-c64-4tc"
+cp "${cbmfilesdir}/v4th-c64" "${cbmfilesdir}/v4th-c64-4tc"
