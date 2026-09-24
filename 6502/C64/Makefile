@@ -44,7 +44,7 @@ clean:
 
 binaries: $(vf_binaries)
 
-test: $(test_resuls)
+tests: $(test_resuls)
 
 alltests: test test-v4th-x16-tsk.result test-v4th-c16+slf.result
 
@@ -114,7 +114,7 @@ cbmfiles/tcbase: emulator/v4th-c64-4tc.T64 emulator/build-tcbase.sh \
 	emulator/build-tcbase.sh
 
 $(vf_binaries): $(vf_fth_files_petscii) emulator/build-vf.sh \
-    emulator/tcbase.T64 cbmfiles/logtofile.fth
+    emulator/run-in-vice.sh emulator/tcbase.T64 cbmfiles/logtofile.fth
 
 cbmfiles/v4thblk-c64:
 	emulator/build-vf.sh v4thblk-c64
