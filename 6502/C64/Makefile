@@ -147,7 +147,7 @@ cbmfiles/tcbase16: emulator/v4thblk-c16+.T64 emulator/build-tcbase.sh \
     cbmfiles/savesys-noed.fth cbmfiles/dir-dos-cat.fth \
     cbmfiles/tc-relocate.fth cbmfiles/tc-base.fth \
     cbmfiles/tc6502asm.fth cbmfiles/tc-main.fth
-	VICE=xplus4 TCVF=v4thblk-c16+ TCBASE=tcbase16 emulator/build-tcbase.sh
+	VICE=xplus4 TCVF=v4th-c16+ TCBASE=tcbase16 emulator/build-tcbase.sh
 
 cbmfiles/v4th-c16+slf: $(vf_fth_files_petscii) emulator/build-vf.sh \
     emulator/tcbase16.T64 cbmfiles/logtofile.fth
