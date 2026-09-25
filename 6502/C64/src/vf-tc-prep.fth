@@ -66,6 +66,23 @@ forget delete Onlyforth
   ." heap "  heap u.  cr
   THEN ;
 
+: .blk|tib  ( -- )
+    blk @ ?dup IF ." Blk " u. ?cr  exit THEN
+    factive? IF tib #tib @ type cr THEN ;
+
+: .voc+  ( adr -- )
+ dup @ 2- >name .name u. ;
+
+: .order+
+  ." here "  here u.
+  ." there " there u.
+ vp 2+ context  DO  I .voc+  -2  +LOOP
+ 2 spaces  current .voc+ cr ;
+
+
+: .order+blk|tib  ( -- )  .order+ .blk|tib ;
+
+\ ' .order+blk|tib is .status
 ' status is .status
 
 variable current-page   0 current-page !
